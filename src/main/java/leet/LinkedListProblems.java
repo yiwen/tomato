@@ -63,6 +63,10 @@ public class LinkedListProblems {
 
     }
 
+    public ListNode reverse(ListNode head) {
+        // write your code here
+    }
+
 
 
 }
