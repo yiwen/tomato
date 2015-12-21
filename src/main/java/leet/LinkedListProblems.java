@@ -209,53 +209,72 @@ public class LinkedListProblems {
 
         ListNode tmp = null;
         // write your code here
-        while(n1 != null && n2 !=null){
-            int sum = add1 ? n1.val + n2.val + 1 : n1.val + n2.val;
+        while(n1 != null || n2 !=null){
+            if (n1 !=null && n2 !=null ) {
+                int sum = add1 ? n1.val + n2.val + 1 : n1.val + n2.val;
 
-            if (sum <10){
-                tmp  = new ListNode(sum);
-                add1 = false;
-            } else {
-                add1 = true;
-                tmp  = new ListNode(sum-10);
-            }
-            n4.next= tmp;
-            n4=n4.next;
-            n1 = n1.next;
-            n2 = n2.next;
-
-        }
-        if (n1 == null && n2 !=null){
-            tmp = new ListNode (add1? n2.val + 1: n2.val);
-            n4.next = tmp;
-            n4 = n4.next;
-            n2=n2.next;
-            while(n2!=null){
-                n4.next= n2;
+                if (sum < 10) {
+                    tmp = new ListNode(sum);
+                    add1 = false;
+                } else {
+                    add1 = true;
+                    tmp = new ListNode(sum - 10);
+                }
+                n4.next = tmp;
+                n4 = n4.next;
+                n1 = n1.next;
+                n2 = n2.next;
+            } else if (n1 == null && n2 !=null){
+                n4.next = add1? new ListNode (n2.val+1) : n2;
                 n4 = n4.next;
                 n2= n2.next;
-            }
-
-        }else if (n1 != null && n2 ==null){
-            tmp = new ListNode (add1? n1.val + 1: n1.val);
-            n4.next = tmp;
-            n4 = n4.next;
-            n1=n1.next;
-            while(n1!=null){
-                n4.next= n1;
+                add1 = false;
+            } else if (n1 != null && n2 ==null){
+                n4.next = add1? new ListNode (n1.val+1) : n1;
                 n4 = n4.next;
-                n1= n1.next;
+                n1=n1.next;
+                add1 = false;
             }
 
-        }else  if (n1 ==null && n2 ==null ){
-            if (add1){
-                 tmp = new ListNode(1);
-                 n4.next=tmp;
+        }
 
-            }
+        if (add1){
+            tmp = new ListNode(1);
+            n4.next=tmp;
+
         }
 
 
         return n3.next;
     }
+
+    ListNode nthToLast(ListNode head, int n) {
+        ListNode cur = head;
+        ListNode nth = null;
+        int i = 0;
+        while(i<n && cur!=null){
+
+            cur = cur.next;
+            i++;
+        }
+
+        nth = cur;
+        cur = head;
+        while(nth!=null) {
+            nth=nth.next;
+            cur = cur.next;
+        }
+        return cur;
+
+    }
+
+    public ListNode insertionSortList(ListNode head) {
+        return null;// write your code here
+    }
+
+
+
+
+
+
 }
