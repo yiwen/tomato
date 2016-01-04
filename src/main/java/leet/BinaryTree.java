@@ -3,7 +3,9 @@ package leet;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class BinaryTree {
     
@@ -92,6 +94,28 @@ public class BinaryTree {
 
 
             }
+        }
+        return rst;
+    }
+
+    public ArrayList<ArrayList<Integer>> levelOrder(TreeNode root) {
+        // write your code here
+        TreeNode node = root;
+        Queue<TreeNode> queue = new LinkedBlockingQueue<TreeNode>();
+        queue.add(node);
+        ArrayList<ArrayList<Integer>> rst = new ArrayList<ArrayList<Integer>>();
+        while(!queue.isEmpty()){
+            ArrayList<Integer> level = new ArrayList<Integer>();
+            int size =  queue.size();
+            for (int i=0;i <size ;i++) {
+                TreeNode item = queue.poll();
+                level.add(item.left.val);
+
+                level.add(item.right.val);
+                queue.add(item.left);
+                queue.add(item.right);
+            }
+            rst.add(level);
         }
         return rst;
     }
