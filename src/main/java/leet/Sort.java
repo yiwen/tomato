@@ -5,10 +5,5 @@ package leet;
  */
 public class Sort {
 
-    public int median(int[] nums) {
-        // write your code here
 
-
-
-    }
 }
