@@ -38,5 +38,7 @@ public class SortedArray {
 
         }
         nums.set(0, last);
+
+
     }
 }

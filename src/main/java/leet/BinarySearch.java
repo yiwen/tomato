@@ -128,5 +128,451 @@ public class BinarySearch {
     }
 
 
+    public int findMin(int[] num) {
+        // write your code here
+        int start = num[0];
+        int end = num.length-1;
+        int target = end;
+        while(start+1 < end){
+            int mid = start + (end-start)/2;
+            if (target == num[mid]){
+                return mid;
+            }
+            if (target<num[mid]){
+                start = mid;
+            }
+            if (target >= num[mid]){
+                end=mid;
+            }
+        }
+        if (num[start]<=num[end]){
+            return num[start];
+        } else {
+            return num[end];
+        }
+    }
+
+
+
+    public static int search(int[] A, int target) {
+        if (A.length ==0){
+            return -1;
+        }
+        // write your code here
+        int start = 0;
+        int end = A.length-1;
+        int first = A[start];
+        int last = A[end];
+
+        while(start +1 <end){
+            int mid = start + (end - start)/2;
+            int m = A[mid];
+            if (m == target){
+                return mid;
+            }
+            if (start < m){
+                if (target<=m && target>=first){
+                    end=mid;
+                }  else {
+                    start =mid;
+                }
+            }else {
+                if(target>=m && target <=last){
+                    start=mid;
+                } else  {
+                    end=mid;
+                }
+            }
+
+
+        }
+        if (A[start] == target){
+            return start;
+
+        }
+        if (A[end] == target){
+            return end;
+        }
+
+            return -1;
+
+
+
+
+    }
+
+    public int[] searchRange(int[] A, int target) {
+        // write your code here
+        int start  =0;
+        int end = A.length-1;
+        int rangeStart ;
+        int rangeEnd;
+
+        while(start + 1< end){
+            int mid = start + (end-start)/2;
+
+            if (A[mid]>=target){
+                end=mid;
+            }
+            if (A[mid]<target){
+              start = mid;
+          }
+
+        }
+        if(A[start]==target){
+            rangeStart=start;
+        }else  if (A[end]==target){
+            rangeStart = end;
+        } else {
+            return new int[]{1,1};
+        }
+         start  =0;
+        end = A.length-1;
+        while(start + 1< end){
+            int mid = start + (end-start)/2;
+            if (A[mid]<=target){
+                  start = mid;
+              }
+              if (A[mid]>target){
+                  end=mid;
+              }
+
+
+          }
+        if(A[end]==target){
+                rangeEnd=end;
+            }else  if (A[start]==target){
+                rangeEnd = start;
+            } else {
+                return new int[]{1,1};
+            }
+        return new int[]{rangeStart, rangeEnd};
+
+    }
+
+
+    public static int findFirstBadVersion(int n) {
+         if (n<=0){
+             return -1;
+         }
+
+        // write your code here
+        int start = 1;
+        int end = n;
+        while(start +1 < end){
+            int mid = start + (end-start)/2 ;
+
+            if(SVNRepo.isBadVersion(mid)){
+                end = mid;
+            } else {
+                start=mid;
+            }
+
+        }
+        if (SVNRepo.isBadVersion(start)){
+            return start;
+        } else if(SVNRepo.isBadVersion(end)) {
+            return end;
+        } {
+
+            return -1;
+        }
+
+
+
+    }
+    class ArrayReader {
+       // get the number at index, return -1 if not exists.
+       public int get(int index){
+           return index;
+       }
+  }
+    public int searchBigSortedArray(ArrayReader reader, int target) {
+        // write your code here
+
+        int start = 0;
+        int index=1;
+        while(reader.get(index-1)<target && reader.get(index-1)!=-1){
+            index = index*2;
+        }
+
+        int end = index-1;
+        while(start+1<end){
+            int mid = start + (end-start)/2;
+
+            if (target > reader.get(mid) && reader.get(mid)!=-1 ) {
+                start=mid;
+            }else{
+                end=mid;
+            }
+
+        }
+        if (reader.get(start)==target){
+            return start;
+        }else if(reader.get(end)==target) {
+            return  end;
+        }else {
+            return -1;
+        }
+    }
+
+
+    public int totalOccurrence(int[] A, int target) {
+        if (A==null || A.length==0){
+            return 0;
+        }
+        // Write your code here
+        int start = 0;
+        int end = A.length-1;
+        int total = 0;
+            while(A[start]<target){
+                start++;
+            }
+            while(A[end]>target){
+                 end--;
+             }
+
+
+        return end-start+1;
+
+    }
+
+    public static int totalOccurrenceBST(int[] A, int target) {
+        int start =0;
+        int end = A.length-1;
+        int starPos=0 ;
+        int endPos=end;
+        while (start+1<end){
+            int mid = start  + (end -start)/2;
+            if (A[mid]<=target){
+                start = mid;
+            }
+            if (A[mid]>target){
+                end = mid;
+            }
+
+        }
+        if (A[end]==target) {
+            endPos = end;
+        }else  if (A[start]==target) {
+            endPos = start;
+
+        }else {
+            return 0;
+        }
+
+         start =0;
+        end = A.length-1;
+
+        while (start+1<end){
+            int mid = start  + (end -start)/2;
+            if (A[mid]>=target){
+               end = mid;
+           }
+            if (A[mid]<target){
+                start = mid;
+            }
+
+
+        }
+        if (A[start]==target) {
+            starPos = start;
+
+
+        }  else    if (A[end]==target) {
+                    starPos = end;
+
+
+                }
+        System.out.println("endpos:" + endPos);
+
+        System.out.println("startpos:" + starPos);
+
+        return endPos-starPos+1;
+
+
+    }
+
+    public  static  void main (String[] args){
+        int[] A ={3,3,3};
+        System.out.println(totalOccurrenceBST(A, 3));
+    }
+
+
+
+    public int closestNumber(int[] A, int target) {
+        if (A==null || A.length==0 ){
+            return -1;
+        }
+
+        // Write your code here
+        int start = 0;
+        int end = A.length-1;
+        while (start +1 <end){
+            int mid = start + (end-start)/2;
+            if (A[mid] ==target){
+                return mid;
+            }
+            if (A[mid] <target){
+                start =mid;
+            }
+            if (A[mid] > target){
+                end = mid;
+            }
+        }
+        if (A[start]== target){
+            return start;
+        }
+        if (A[end]== target){
+            return end;
+        }
+        return Math.abs(target- A[start])< Math.abs(A[end]-target)  ? start: end;
+    }
+
+    public int lastPosition(int[] A, int target) {
+            if (A==null || A.length ==0){
+                return 0;
+            }
+            // Write your code here
+            int start =0;
+            int end = A.length-1;
+
+            while(start+1<end){
+                int mid = start + (end-start)/2;
+                if(A[mid] <= target){
+                    start =mid;
+                }
+                if (A[mid] >target){
+                    end =mid;
+                }
+            }
+            if (A[end] ==target){
+                return end;
+
+            } else if(A[start]==target){
+                return start;
+            }else {
+                return 0;
+            }
+        }
+
+    public int findPosition(int[] A, int target) {
+        // Write your code here
+        if (A==null || A.length ==0){
+                       return 0;
+                   }
+       // Write your code here
+       int start =0;
+       int end = A.length-1;
+
+       while(start+1<end){
+           int mid = start + (end-start)/2;
+           if (A[mid]==target){
+               return mid;
+           }
+           if(A[mid] < target){
+               start =mid;
+           }
+           if (A[mid] >target){
+               end =mid;
+           }
+       }
+        if (A[start]==target){
+            return start;
+        } else if (A[end]==target){
+            return end;
+        }  else {
+            return -1;
+        }
+
+    }
+
+    public int[] kClosestNumbers(int[] A, int target, int k) {
+        // Write your code here
+        if (A==null || A.length==0 ||k > A.length){
+           return new int[k];
+        }
+        if (k==0){
+            return null;
+        }
+        int start = 0;
+        int end = A.length-1;
+        int pos = 0;
+        while (start+1<end){
+            int mid  = start + (end-start)/2;
+            if (A[mid]==target){
+                pos = mid;
+                break;
+            }
+            if (A[mid] <target){
+                start=mid;
+            }
+            if (A[mid] >target){
+                end=mid;
+            }
+        }
+        if (pos==0) {
+            if (A[start] == target) {
+                pos = start;
+            } else if (A[end] == target) {
+                pos = end;
+            } else {
+                pos = target - A[start] < A[end] - target ? start : end;
+            }
+        }
+
+        int[] rst = new int[k];
+        rst[0]=A[pos];
+        int left = pos-1;
+        int right =pos+1;
+        int count=1;
+        int minDiff= Integer.MIN_VALUE;
+        while(left>=0 && right<=A.length-1 && count<k){
+
+               while (left >0 && target - A[left] <= A[right] - target && count < k) {
+                   count++;
+                   rst[count] = A[left];
+                   left--;
+
+               }
+
+                if (left==0 && target - A[left] <= A[right] - target && count < k ) {
+                    count++;
+                    rst[count] = A[0];
+                }
+                while (right < A.length-1 && A[right] - target < target - A[left] && count < k) {
+                    count++;
+                    rst[count] = A[right];
+                    right++;
+
+                }
+                if (right == A.length-1  && A[right] - target < target - A[left] && count < k ) {
+                       count++;
+                       rst[count] = A[A.length-1];
+                }
+
+        }
+
+        if (left<0){
+            while (right <= A.length-1 && count < k) {
+                count++;
+                rst[count] = A[right];
+                right++;
+
+            }
+        } else if (right > A.length-1){
+            while (left >=0 && count < k) {
+               count++;
+               rst[count] = A[left];
+               left--;
+
+           }
+        }
+
+
+        return rst;
+
+
+    }
 
 }

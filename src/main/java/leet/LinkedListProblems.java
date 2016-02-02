@@ -38,33 +38,31 @@ public class LinkedListProblems {
     }
 
     ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode cur = head;
-        ListNode nth = null;
-        int i =1;
-        while(i < n){
-            if (cur!=null) {
-                cur = cur.next;
-                i++;
+        if (head==null){
+            return null;
+        }
+        ListNode dummy =  new ListNode(0);
+        dummy.next = head;
+        ListNode prev= dummy;
+        ListNode fistPnt = head;
+        ListNode sedPnt = head;
+        for(int i =1;i<=n;i++){
+            if (sedPnt!=null){
+                sedPnt=sedPnt.next;
             } else {
-               return head;
+                return null;
             }
+        }
+
+        while(sedPnt!=null){
+            prev= fistPnt;
+            fistPnt = fistPnt.next;
+            sedPnt = sedPnt.next;
 
         }
-        ListNode start = head;
-        ListNode prev = null;
-        nth = cur;
-        while(nth.next!=null){
-            nth = nth.next;
-            prev = start;
-            start = start.next;
-        }
-        if (prev!=null){
-            prev.next=start.next;
-            return head;
+        prev.next = fistPnt.next;
+        return dummy.next;
 
-        } else {
-            return head.next;
-        }
 
     }
 
@@ -138,52 +136,36 @@ public class LinkedListProblems {
 
     }
     public static ListNode partition(ListNode head, int x) {
+        if (head==null){
+            return null;
+        }
         // write your code here
-        ListNode leftTail =null;
-        ListNode leftStart=new ListNode(0);
-     //   leftStart.next = leftTail;
-       leftTail = leftStart;
-        ListNode rightTail = null;
-        ListNode prev= null;
-        ListNode rightStart = new ListNode(0);
-        rightTail = rightStart;
-       // rightStart.next = rightTail;
+        ListNode right = new ListNode(0);
+        ListNode dummyR =right;
+        ListNode left= new ListNode(0);
+        ListNode dummyL =left;
+
         ListNode cur = head;
         while(cur!=null){
-            ListNode tmp = new ListNode(cur.val);
-            tmp.next = cur.next;
-            if (cur.val < x){
-           //     prev  = leftTail==null? leftStart : leftTail;
+            if(cur.val<x){
 
-                leftTail.next = cur;
-                leftTail = cur;
+                left.next=cur;
+                left = left.next;
 
+            } else {
 
-            }  else {
-           //     prev  = rightTail==null? rightStart : rightTail;
-
-                rightTail.next = cur;
-                rightTail=cur;
-
-
+                right.next=cur;
+                right = right.next;
             }
             cur = cur.next;
         }
-        rightTail.next=null;
+        left.next = dummyR.next;
+        right.next=null;
+        return  dummyL.next;
 
-        leftTail.next = rightStart.next;
-         return leftStart.next;
     }
 
-    public static void main(String[] args){
-        ListNode n1 = new ListNode(4, null);
-        ListNode n2 = new ListNode(2, n1);
-        ListNode n3 = new ListNode(1, n2);
-        ListNode n4 = new ListNode(3, n3);
-        ListNode n5 = new ListNode(3, n4);
 
-        partition(n5, 3);
-    }
 
 
     public void deleteNode(ListNode node) {
@@ -269,12 +251,208 @@ public class LinkedListProblems {
     }
 
     public ListNode insertionSortList(ListNode head) {
-        return null;// write your code here
+        ListNode prevHead = new ListNode(0);
+        prevHead.next=head;
+        ListNode cur = head;
+        ListNode next = head.next;
+        while (next!=null){
+            if(cur.val <= next.val){
+                cur = next;
+                next = next.next;
+            } else {
+                ListNode existingNext = insertFromHead(next, prevHead);
+                cur.next = existingNext;
+                next= existingNext;
+
+            }
+        }
+        return prevHead.next;
     }
 
+    private ListNode insertFromHead(ListNode node, ListNode prevHead){
+        ListNode cur = prevHead.next;
+        ListNode existingNext = node.next;
+        ListNode prev= prevHead;
+        while(cur.val <= node.val){
+            prev = cur;
+            cur = cur.next;
+
+        }
+        prev.next = node;
+        node.next = cur;
+        return existingNext;
+    }
+
+    public static ListNode deleteDuplicatesII(ListNode head) {
+        if (head==null){
+            return null;
+        }
+        if (head.next==null){
+            return head;
+        }
+        ListNode origin = new ListNode(head.val-1);
+        origin.next=head;
+        ListNode prev = origin;
 
 
+        ListNode cur = head;
+        ListNode next = head.next;
+        Set<Integer> set = new HashSet<Integer>();
+        while(cur!=null && next!=null){
+
+            if(set.contains(cur.val) ){
+                prev.next=cur.next;
+                cur = cur.next;
+                next = cur.next;
+
+            } else if (cur.val == next.val){
+
+                set.add(cur.val);
+                if (next.next!=null) {
+                    cur = next.next;
+                    next = next.next.next;
+                    prev.next=cur;
+
+                }else {
+                    prev.next=null;
+                    break;
+
+                }
+
+            }  else{
+                set.add(cur.val);
+                prev=cur;
+                cur = next;
+                next = next.next;
+
+            }
+
+        }
+        if (next==null){
+            if(set.contains(cur.val) ){
+                prev.next = null;
+            }
+        }
+
+        return  origin.next;
+    }
+
+    public static void main(String[] args){
+
+         ListNode head = new ListNode(0);
+        head.next=null;
+        sortedListToBST(head);
+    }
+    public static ListNode deleteDuplicatesII_NO_SET(ListNode head) {
+        if (head==null){
+            return null;
+        }
+        if (head.next==null){
+            return head;
+        }
+        ListNode origin = new ListNode(head.val-1);
+        origin.next=head;
+        ListNode prev = origin;
 
 
+        ListNode cur = head;
+        ListNode next = head.next;
+        boolean foundDup=false;
+        while(cur!=null && next!=null){
+
+            while(next!=null && cur.val==next.val){
+                foundDup  = true;
+                cur.next = next.next;
+                next = next.next;
+            }
+
+
+            if (foundDup) {
+                prev.next = next;
+                foundDup = false;
+
+            }else{
+                prev=cur;
+            }
+            cur  = next;
+            if (next!=null) {
+                next = next.next;
+            }
+
+        }
+        return origin.next;
+
+    }
+
+    static public TreeNode sortedListToBST(ListNode head) {
+        int l = getLength(head);
+       return sortListToBstHelper(head, l);
+    }
+
+    static int getLength(ListNode node){
+        int l = 0;
+        while(node!=null){
+            l++;
+            node=node.next;
+        }
+        return l;
+    }
+    static ListNode getMid(ListNode node, int l){
+        int mid = (l+1)/2-1;
+        ListNode cur =node;
+        while(mid>0 && cur!=null){
+            cur=cur.next;
+            mid--;
+        }
+
+        return cur;
+    }
+    static TreeNode sortListToBstHelper(ListNode head, int length){
+        if(head==null || length==0){
+            return null;
+        }
+        if (length==1){
+            return new TreeNode(head.val);
+        }
+
+        ListNode mid = getMid(head, length);
+        TreeNode root = new TreeNode(mid.val);
+        root.left = sortListToBstHelper(head, (length+1) / 2-1);
+        root.right = sortListToBstHelper(mid.next, length-(length+1)/2);
+
+        return root;
+    }
+
+    public ListNode sortList(ListNode head) {
+        // write your code here
+        int l= getLength(head);
+
+    }
+    sortListHelper(ListNode node, int l){
+        ListNode mid = getMid(node, l);
+        if (mid==null){
+            return node;
+        }
+        int leftPnt = 1;
+        int leftEnd = (l+1)/2-1;
+        int rightPnt = l-(l+1)/2;
+        ListNode left = node;
+        ListNode right   = mid.next;
+        while(leftPnt <leftEnd && right!=null){
+            while(leftPnt <leftEnd && left.val<=mid.val){
+                left=left.next;
+                leftPnt++;
+            }
+            while(right!=null&& right.val > mid.val){
+                rightPnt++;
+                right=right.next ;
+            }
+            if(leftPnt==leftEnd){
+                break;
+            }
+
+        }
+
+    }
 
 }
