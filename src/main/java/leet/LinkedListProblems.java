@@ -1,6 +1,8 @@
 package leet;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -337,12 +339,6 @@ public class LinkedListProblems {
         return  origin.next;
     }
 
-    public static void main(String[] args){
-
-         ListNode head = new ListNode(0);
-        head.next=null;
-        sortedListToBST(head);
-    }
     public static ListNode deleteDuplicatesII_NO_SET(ListNode head) {
         if (head==null){
             return null;
@@ -423,36 +419,180 @@ public class LinkedListProblems {
         return root;
     }
 
-    public ListNode sortList(ListNode head) {
-        // write your code here
-        int l= getLength(head);
+    public static void main(String[] args){
+
+         ListNode head = new ListNode(2);
+        ListNode l2=new ListNode(4);
+        head.next=l2;
+        l2.next=null;
+
+        List<ListNode> lists = new ArrayList<ListNode>();
+        lists.add(head);
+        ListNode head2=new ListNode(0);
+        head2.next=null;
+        ListNode head3 = new ListNode(-1);
+         head2.next=null;
+        lists.add(head2);
+        lists.add(head3);
+
+        mergeKSortedList(lists);
+    }
+
+
+    public ListNode findMiddle(ListNode head){
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast!=null&fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+
+        return slow;
+    }
+
+    public static ListNode middleNode(ListNode head) {
+        // Write your code here
+        if (head==null){
+            return null;
+        }
+        if (head.next==null){
+            return head;
+        }
+        ListNode slow = new ListNode(0);
+        slow.next=head;
+        ListNode fast = new ListNode(0);
+        fast.next =head;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast =fast.next.next;
+        }
+        return slow;
+    }
+    public static  ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+            // write your code here
+        ListNode cur1 = l1;
+        ListNode cur2 = l2;
+        ListNode dummy = new ListNode(0);
+
+        ListNode rst = dummy;
+
+        while(cur1!=null && cur2!=null){
+            if (cur1.val < cur2.val){
+                rst.next=cur1;
+                cur1 = cur1.next;
+                rst = rst.next;
+            }  else{
+                rst.next = cur2;
+                cur2=cur2.next;
+                rst = rst.next;
+            }
+        }
+        if (cur1==null){
+            rst.next = cur2;
+        }   else {
+            rst.next=cur1;
+        }
+        return dummy.next;
 
     }
-    sortListHelper(ListNode node, int l){
-        ListNode mid = getMid(node, l);
-        if (mid==null){
-            return node;
+
+    public static  ListNode mergeKSortedList(List<ListNode> list){
+      if(list==null || list.size()==0){
+          ;
+      }
+        ListNode cur = list.get(0);
+      for (int i=1;i<list.size();i++){
+         cur = mergeTwoLists(cur, list.get(i));
+
+      }
+       return cur;
+
+    }
+
+    public ListNode mergeKLists(List<ListNode> lists) {
+          // write your code here
+        if (lists==null ||lists.size()==0){
+            return null;
         }
-        int leftPnt = 1;
-        int leftEnd = (l+1)/2-1;
-        int rightPnt = l-(l+1)/2;
-        ListNode left = node;
-        ListNode right   = mid.next;
-        while(leftPnt <leftEnd && right!=null){
-            while(leftPnt <leftEnd && left.val<=mid.val){
-                left=left.next;
-                leftPnt++;
+        ListNode cur = lists.get(0);
+        for (int i=1; i<lists.size();i++){
+            cur = mergeTwoLists(cur, lists.get(i));
+
+        }
+        return cur;
+      }
+
+
+   class RandomListNode {
+         int label;
+         RandomListNode next, random;
+        RandomListNode(int x) { this.label = x; }
+   };
+
+
+
+    public void reorderList(ListNode head) {
+        // write your code here
+        if (head==null){
+            return ;
+
+
+        }
+        if (head.next==null){
+            return ;
+        }
+        ListNode mid = findMiddle(head);
+        ListNode dummy = new ListNode(0);
+        ListNode begin = head;
+        ListNode end = reverseList(mid);
+        ListNode tmp = dummy;
+        boolean fromBegin = true;
+        while(end!=null && begin!=null ){
+            if(fromBegin){
+            tmp.next=  begin ;
+                fromBegin=false;
+            }else {
+                tmp.next=end;
+                fromBegin=true;
             }
-            while(right!=null&& right.val > mid.val){
-                rightPnt++;
-                right=right.next ;
-            }
-            if(leftPnt==leftEnd){
-                break;
-            }
+            tmp=tmp.next;
+
+            end = end.next;
+            begin= begin.next;
 
         }
 
+
+    }
+
+    public ListNode reverseList(ListNode head){
+        if (head==null){
+            return null;
+        }
+        if (head.next==null){
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next=head;
+        ListNode prev=dummy ;
+        ListNode cur=head ;
+        while(cur!=null){
+            ListNode next = cur.next;
+            cur.next=prev;
+            prev=cur;
+            cur=next;
+
+
+        }
+         head.next=null;
+
+        return prev;
+
+
+    }
+    public RandomListNode copyRandomList(RandomListNode head) {
+        // write your code here
+        return null;
     }
 
 }
