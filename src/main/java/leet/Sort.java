@@ -214,4 +214,58 @@ public class Sort {
             System.out.println();
     }
 
+    public void sortColors(int[] nums) {
+        // write your code here
+        // write your code here
+        if (nums==null || nums.length==0){
+            return;
+        }
+        int red=-1;
+        int blue=nums.length;
+        int pos = 0;
+        while (pos<=nums.length-1){
+            if (nums[pos]==0){
+                red++;
+                swap(nums, pos, red);
+
+            }
+            if (nums[pos]==2){
+                blue--;
+                swap(nums, pos, blue);
+            }
+            pos++;
+        }
+    }
+
+
+    public int partitionArray(int[] nums, int k) {
+        //write your code here
+        if (nums==null || nums.length==0){
+            return 0;
+        }
+        int left = 0;
+        int right = nums.length-1;
+       while(left<right){
+            while(left<right && nums[left] <=k) {
+                left++;
+
+            }
+            while(left<right && nums[right]>k){
+                right--;
+            }
+           if (nums[left]>nums[right]) {
+               swap(nums, left, right);
+           }
+
+        }
+        return right <nums.length-1? right: nums.length ;
+    }
+    void swap(int[] nums, int a, int b){
+        int tmp= nums[a];
+        nums[a]=nums[b];
+        nums[b]=tmp;
+
+    }
+
+
 }

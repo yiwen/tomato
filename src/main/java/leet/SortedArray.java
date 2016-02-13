@@ -41,4 +41,39 @@ public class SortedArray {
 
 
     }
+
+    public void merge(int[] A, int m, int[] B, int n){
+        int pos=m+n-1;
+        int aP=m-1;
+        int bP=n-1;
+        while(aP>=0&& bP>=0) {
+            while (A[aP] >= B[bP] && aP >= 0) {
+                A[pos] = A[aP];
+                pos--;
+                aP--;
+            }
+            while (A[aP] < B[bP] && bP >= 0) {
+                A[pos] = B[bP];
+                pos--;
+                bP--;
+            }
+
+        }
+        if (aP < 0) {
+            while (bP >=0) {
+                A[pos] = B[bP];
+                bP--;
+                pos--;
+            }
+        }
+        if (bP <0) {
+            while (aP >=0) {
+                A[pos] = A[aP];
+                aP--;
+                pos--;
+            }
+        }
+
+
+    }
 }

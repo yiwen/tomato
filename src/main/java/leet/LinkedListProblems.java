@@ -1,9 +1,6 @@
 package leet;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class LinkedListProblems {
@@ -549,18 +546,21 @@ public class LinkedListProblems {
         boolean fromBegin = true;
         while(end!=null && begin!=null ){
             if(fromBegin){
-            tmp.next=  begin ;
+                tmp.next=  begin ;
+                begin= begin.next;
+
                 fromBegin=false;
             }else {
                 tmp.next=end;
+                end = end.next;
+
                 fromBegin=true;
             }
             tmp=tmp.next;
 
-            end = end.next;
-            begin= begin.next;
 
         }
+
 
 
     }
@@ -592,7 +592,159 @@ public class LinkedListProblems {
     }
     public RandomListNode copyRandomList(RandomListNode head) {
         // write your code here
+        if(head==null){
+            return null;
+        }
+
+        RandomListNode cur =head;
+        Set<RandomListNode> set = new HashSet<RandomListNode>();
+        RandomListNode dummy = new RandomListNode(0);
+        RandomListNode clone = dummy;
+
+        while(cur!=null){
+
+            RandomListNode   node = new RandomListNode(cur.label);
+
+            set.add(node);
+            clone.next=node;
+            cur=cur.next;
+            clone=clone.next;
+        }
+        RandomListNode clonePnt = dummy.next;
+        cur =head;
+        while(cur!=null){
+           RandomListNode random = cur.random;
+            if (set.contains(random)){
+                clonePnt.random=random;
+            }else{
+                clonePnt.random=new RandomListNode(random.label);
+            }
+            clonePnt = clonePnt.next;
+        }
+
+        return dummy.next;
+
+    }
+
+    public ListNode reverseBetween(ListNode head, int m , int n) {
+        // write your code
+        if (head==null){
+            return null;
+        }
+        if (head.next==null){
+            return head;
+        }
+        ListNode m_1Node = findN_1thNode(head, m);
+        ListNode mNode =m_1Node.next;
+
+        ListNode n_1Node = findN_1thNode(head, n);
+        ListNode nNode = n_1Node.next;
+        ListNode nnNode = nNode.next;
+
+        int length = n-m+1;
+
+        ListNode prev = m_1Node;
+        ListNode cur = mNode;
+        int count =0;
+        while(count<length){
+            ListNode next = cur.next;
+            cur.next=prev;
+            prev = cur;
+            cur = next;
+            count++;
+        }
+
+
+        if (m>1) {
+            m_1Node.next = cur;
+            mNode.next = nnNode;
+            return head;
+        }else {
+
+            mNode.next=nnNode;
+            return cur;
+        }
+    }
+
+
+    ListNode findN_1thNode(ListNode head, int n){
+        ListNode cur = new ListNode(0);
+        cur.next=head;
+        int count=0;
+        while(cur!=null && count<n-1){
+            cur = cur.next;
+            count++;
+            if(count==n-1){
+                return cur;
+
+            }
+        }
+        return cur;
+
+}
+
+    ListNode mergTwoHeads(ListNode n1, ListNode n2){
+        ListNode dummy= new ListNode(0);
+        ListNode cur= dummy;
+
+        while (n1!=null && n2!=null){
+            if(n1.val<n2.val){
+                cur.next=n1;
+                n1=n1.next;
+                cur=cur.next;
+            }else{
+                cur.next=n2;
+                n2=n2.next;
+                cur=cur.next;
+
+            }
+        }
+        if (n1==null){
+            cur.next=n2;
+        }else {
+            cur.next=n1;
+        }
+        return dummy.next;
+    }
+
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode mid = findMiddle(head);
+        ListNode right = sortList(mid.next);
+        mid.next = null;
+        ListNode left = sortList(head);
+
+        return mergeTwoLists(left, right);
+
+    }
+
+    public ListNode detectCycle(ListNode head) {
+        // write your code here
+        if (head==null || head.next==null){
+
+            return null;
+        }
+        ListNode slow= head;
+        ListNode fast =head;
+        while(fast!=null|| fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            if(slow!=fast){
+                return  findMeetPoint(head, fast);
+            }
+        }
         return null;
     }
 
+    ListNode findMeetPoint(ListNode head, ListNode k){
+        ListNode cur = head;
+        while (cur!=k){
+            cur=cur.next;
+            k=k.next;
+        }
+        return cur;
+    }
 }
