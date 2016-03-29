@@ -747,4 +747,49 @@ public class LinkedListProblems {
         }
         return cur;
     }
+
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // Write your code here
+        if (headA==null || headB==null){
+            return null;
+        }
+        ListNode dummyA =headA;
+        ListNode dummyB = headB;
+        int lenA = 0;
+        int lenB =0;
+        while(dummyA!=null){
+            lenA++;
+            dummyA = dummyA.next;
+        }
+        while(dummyB!=null){
+            lenB++;
+            dummyB = dummyB.next;
+        }
+        if(lenB > lenA){
+            int tmp =lenB;
+            while(tmp> lenA){
+                tmp--;
+                dummyB=dummyB.next;
+            }
+        }else if(lenB < lenA){
+            int tmp =lenA;
+            while(tmp> lenB){
+                tmp--;
+                dummyA=dummyA.next;
+            }
+        }else{
+            while(dummyB!=null && dummyA !=null ){
+                if(dummyB.val !=dummyA.val){
+                    return dummyA;
+                }
+
+                dummyB=dummyB.next;
+                dummyA=dummyA.next;
+            }
+
+        }
+        return null;
+
+
+    }
 }

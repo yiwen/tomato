@@ -6,8 +6,7 @@ import java.util.*;
  * Created by yiwengao on 4/28/15.
  */
 public class SumProblem {
-    public static void main(String[] args) {
-    }
+
 
     public int[] twoSum_hash(int[] numbers, int target) {
         if (numbers.length < 2) {
@@ -169,8 +168,34 @@ public class SumProblem {
         }
     }
 
-    public ArrayList<ArrayList<Integer>> foureSum(int[] numbers) {
+    public int twoSum2(int[] nums, int target) {
+        // Write your code here
+        if(nums==null || nums.length==0){
+            return 0;
+        }
+        Arrays.sort(nums);
+        int start =0;
+        int end = nums.length-1;
+        int count =0;
+        while(start < end){
+            if(nums[start] + nums[end] > target){
+                count= count + end-start;
+                end--;
+            }
 
 
+            else{
+                start++;
+            }
+
+        }
+        return count;
     }
+
+    public static void main(String[] args){
+        int[] a ={1,4,6}   ;
+        SumProblem problem = new SumProblem();
+        System.out.println(problem.twoSum2(a, -1));
+    }
+
 }

@@ -94,4 +94,73 @@ public class HashMapProblems {
     public static void main(String[] args){
         System.out.println(subarraySum(new int[]{1,-1}));
     }
+
+    public int longestConsecutive(int[] num) {
+        // write you code here
+        HashSet<Integer> set = new HashSet<Integer>();
+        for(int i=0; i <num.length ; i++){
+            set.add(num[i]);
+
+        }
+        int count=0;
+        int tmp;
+        int max = Integer.MIN_VALUE;
+        for(int i=0; i <num.length ; i++){
+            tmp = num[i];
+            count = 0;
+            set.remove(tmp);
+            while(set.contains(tmp-1)){
+                tmp--;
+                count++;
+            }
+            tmp = num[i];
+            while(set.contains(tmp+1)){
+                tmp++;
+                count++;
+            }
+            max = Math.max(max, count);
+        }
+        return max;
+    }
+
+    public ListNode[] rehashing(ListNode[] hashTable) {
+        // write your code here
+        if (hashTable==null || hashTable.length==0){
+            return new ListNode[]{};
+        }
+        int cap = hashTable.length * 2;
+
+        ListNode[] rst = Arrays.copyOf(hashTable, cap);
+        for(int i=0 ;i<hashTable.length ; i++){
+            if(hashTable[i]==null){
+                continue;
+            }
+            ListNode node = hashTable[i];
+            ListNode tmp ;
+            while(node.next!=null){
+                tmp = node;
+                int newIndex = (node.val%cap + node.val)%cap;
+                if (rst[newIndex]==null) {
+                    rst[newIndex] = tmp;
+
+                }else{
+                    ListNode cur = rst[newIndex];
+                    while(cur.next!=null){
+                        cur=cur.next;
+                    }
+                    cur.next=tmp;
+
+
+                }
+
+                node = node.next;
+
+                tmp.next = null;
+
+            }
+            rst[i] = node;
+
+        }
+        return rst;
+    }
 }

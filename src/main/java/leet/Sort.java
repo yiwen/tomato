@@ -223,17 +223,19 @@ public class Sort {
         int red=-1;
         int blue=nums.length;
         int pos = 0;
-        while (pos<=nums.length-1){
+        while (pos<blue){
             if (nums[pos]==0){
                 red++;
                 swap(nums, pos, red);
+                pos++;
 
-            }
+            }else
             if (nums[pos]==2){
                 blue--;
                 swap(nums, pos, blue);
+            }else {
+                pos++;
             }
-            pos++;
         }
     }
 
@@ -266,6 +268,83 @@ public class Sort {
         nums[b]=tmp;
 
     }
+
+    public void sortColors2(int[] colors, int k) {
+        // write your code here
+        if(colors==null ||colors.length==0){
+            return;
+        }
+        if (k>colors.length){
+            return;
+        }
+        int min=1;
+        int max = k;
+        int start =0;
+        int end = colors.length-1;
+        while(start<end){
+            int[] tmpRst = sortIntoThreeGroups(colors, start, end, min, max);
+            start = tmpRst[0]+1;
+            end = tmpRst[1]-1;
+            min++;
+            max--;
+        }
+    }
+
+
+    public int[] sortIntoThreeGroups(int[] colors, int start, int end, int min, int max){
+
+        int minP=start-1;
+        int maxP= end+1;
+        int pos=0;
+        while(pos<maxP){
+            if(colors[pos]==min){
+                minP++;
+                swap(colors, pos, minP);
+                pos++;
+            }else  if(colors[pos]==max){
+                maxP--;
+                swap(colors, pos, maxP);
+            }else{
+                pos++;
+            }
+        }
+        return new int[]{minP, maxP};
+    }
+
+
+    private int findKthMin(int[]a, int l , int r, int k) {
+        if(l ==r){
+            return a[r];
+        }
+        int left = l;
+        int right = r;
+        int pivot = a[l];
+
+        while (left < right) {
+            while (left < right && a[right] >= pivot) {
+                right--;
+            }
+            a[left]=a[right];
+            while (left < right && a[left] <= pivot) {
+                left++;
+            }
+            a[right]=a[left];
+
+
+
+        }
+        a[left]=pivot;
+         if (left ==k){
+             return a[left];
+         }else if (left < k){
+            return findKthMin(a, left+1, r, k );
+        }else {
+             return findKthMin(a, l, left-1, k);
+
+         }
+
+    }
+
 
 
 }

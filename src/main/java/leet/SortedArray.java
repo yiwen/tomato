@@ -1,6 +1,7 @@
 package leet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by yiwengao on 12/27/15.
@@ -74,6 +75,45 @@ public class SortedArray {
             }
         }
 
+
+    }
+
+    public double findMedianSortedArrays(int[] A, int[] B) {
+        if (A==null || B==null){
+            return 0;
+        }
+        // write your code here
+
+        if ((A.length + B.length)%2==1) {
+            return findMedianSortedArraysHelper(A, B, 0, 0, (A.length + B.length)/2+1);
+        }else {
+            return (findMedianSortedArraysHelper(A, B, 0, 0, (A.length + B.length)/2+1) +
+                    findMedianSortedArraysHelper(A, B, 0, 0, (A.length + B.length)/2))/2.0;
+
+
+        }
+    }
+
+    public double findMedianSortedArraysHelper(int[] A, int[] B, int aS, int bS, int k) {
+        if (aS>=A.length){
+            return B[bS + k-1];
+        }
+        if (bS >=B.length){
+            return A[aS +k-1];
+        }
+        if (k==1){
+            return Math.min(A[aS], B[bS]);
+        }
+        // write your code here
+        int aK = A.length > aS + k/2-1   ? A[aS+k/2-1] : Integer.MAX_VALUE;
+        int bK = B.length > bS+ k/2-1 ? B[bS + k/2-1] : Integer.MAX_VALUE;
+
+        if(aK < bK){
+           return findMedianSortedArraysHelper(A, B, aS + k/2, bS, k-k/2);
+        }else{
+            return findMedianSortedArraysHelper(A, B, aS, bS+k/2, k- k/2);
+
+        }
 
     }
 }
