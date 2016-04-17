@@ -1,9 +1,6 @@
 package leet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ygao on 3/1/16.
@@ -119,6 +116,28 @@ public class ArrayProblems {
             }
         }
         return 1;
+    }
+
+    public int longestConsecutive(int[] num) {
+        // write you code here
+        Set<Integer> set = new HashSet<Integer>();
+        for (int i=0; i < num.length ; i++){
+            set.add(num[i]);
+
+        }
+        int max = Integer.MIN_VALUE;
+        int len = 1;
+        for(int i=0 ; i < num.length ; i++){
+            int cur = num[i] -1;
+            while (set.contains(cur)) {
+                len++;
+                cur --;
+
+            }
+            max = Math.max(len, cur);
+            len=1;
+        }
+        return max;
     }
 
 

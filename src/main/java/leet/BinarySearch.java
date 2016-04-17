@@ -719,7 +719,7 @@ public class BinarySearch {
             }
         }
         if (posT <0){
-            posT = Math.abs(A[start]-target)< Math.abs(A[end]-target) ? start : end;
+            posT = Math.abs(A[start] - target)< Math.abs(A[end] - target) ? start : end;
         }
         int[] rst = new int[k];
         rst[0] = A[posT];
@@ -727,7 +727,7 @@ public class BinarySearch {
         int left = posT-1;
         int right = posT +1;
         while(left >=0 && right<=A.length-1 && count<k){
-            if(Math.abs(A[left]-target) <= Math.abs(A[right]-target)){
+            if(Math.abs(A[left] - target) <= Math.abs(A[right] - target)){
 
                 rst[count]=A[left];
 

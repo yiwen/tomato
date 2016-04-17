@@ -559,31 +559,37 @@ public class BinaryTree {
             return null;
         }
         List<List<Integer>> rst = new ArrayList<List<Integer>>();
-        List<Integer> row = new ArrayList<Integer>();
-        row.add(root.val);
-        toLeaf(root, rst, row);
+
+        toLeaf(root, rst, new ArrayList<Integer>(), target);
         return rst;
     }
 
-    void toLeaf(TreeNode node, List<List<Integer>> rst, List<Integer> row) {
+    void toLeaf(TreeNode node, List<List<Integer>> rst,  List<Integer> row, int target) {
+        if (node==null){
 
-        if (node.left == null || node.right == null) {
-            List<Integer> cp = new ArrayList<Integer>(row);
-            rst.add(cp);
             return;
         }
-        if (node.left != null) {
-            row.add(node.left.val);
-            toLeaf(node.left, rst, row);
-            row.remove(node.left);
-
+        row.add(node.val);
+        if (node.left==null && node.right==null){
+            if (checkSum(row, target)){
+                rst.add(row);
+            }
+            return;
         }
 
-        if (node.right != null) {
-            row.add(node.right.val);
-            toLeaf(node.right, rst, row);
-            row.remove(node.right);
+        toLeaf(node.left, rst, new ArrayList<Integer>(row), target);
+
+        toLeaf(node.right, rst,new ArrayList<Integer>(row), target);
+
+
+    }
+
+    private boolean checkSum( List<Integer> row, int target){
+        int sum=0;
+        for (int i = 0;i<row.size();i++ ){
+            sum = sum + row.get(i);
         }
+        return sum== target;
     }
 
 
@@ -651,5 +657,38 @@ public class BinaryTree {
         root.right= getNode(inorderMap, rootIndex+1, inRight,preoder, preLef+rootIndex-inLef+1,  preRight);
         return root;
     }
+
+    public TreeNode inorderSuccessor_NOSTACK(TreeNode root, TreeNode p) {
+        if(root ==null || p==null){
+            return null;
+        }
+        TreeNode cur = root;
+        TreeNode prev = null;
+        while(cur !=null && cur.val != p.val) {
+            if (cur.val < p.val) {
+
+                cur = cur.right;
+            } else {
+                prev = cur;
+                cur = cur.left;
+
+            }
+        }
+        if (cur == null){
+            return null;
+        }
+        if (cur.right==null){
+            return prev;
+        }
+
+        cur = cur.right;
+        while(cur!=null){
+            cur = cur.left;
+        }
+
+        return cur;
+    }
+
+
 
 }

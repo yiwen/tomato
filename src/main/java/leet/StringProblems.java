@@ -1,5 +1,6 @@
 package leet;
 
+import java.lang.*;
 import java.util.*;
 
 /**
@@ -226,7 +227,7 @@ public class StringProblems {
     public static void main(String[] args) {
 
         StringProblems p = new StringProblems();
-        p.longestCommonPrefix(new String[]{"ABCD","ABEF","ACEF"});
+       p.minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd");
     }
 
     public String countAndSay(int n) {
@@ -321,7 +322,7 @@ public class StringProblems {
                 while(A.charAt(i+len)==B.charAt(j+len)){
                     len++;
                 }
-                max = Math.max(len, max);
+                max = java.lang.Math.max(len, max);
             }
         }
         return max;
@@ -347,4 +348,111 @@ public class StringProblems {
 
 
     }
+    public String minWindow(String source, String target) {
+        // write your code
+        if (target == null || target.length() == 0 || source == null || source.length() == 0 || source.length() < target.length()) {
+            return "";
+        }
+        Map<Character, Integer> targetMap = new HashMap<Character, Integer>();
+        Map<Character, Integer> sourceMap = new HashMap<Character, Integer>();
+        for (int i = 0; i < target.length(); i++) {
+            if (targetMap.containsKey(target.charAt(i))) {
+                targetMap.put(target.charAt(i), targetMap.get(target.charAt(i)) + 1);
+            } else {
+                targetMap.put(target.charAt(i), 1);
+            }
+        }
+        int end = 0;
+        int start = 0;
+        int minLen = Integer.MAX_VALUE;
+        String minStr = "x";
+        for (int i = 0; i < source.length(); i++) {
+            if (!targetMap.containsKey(source.charAt(i))) {
+                continue;
+            }
+            if (sourceMap.containsKey(source.charAt(i))) {
+                sourceMap.put(source.charAt(i), sourceMap.get(source.charAt(i)) + 1);
+            } else {
+                sourceMap.put(source.charAt(i), 1);
+            }
+            while (start < i) {
+                if (!targetMap.containsKey(source.charAt(start))) {
+                    start++;
+                    continue;
+                }
+                if (sourceMap.get(source.charAt(start)) > targetMap.get(source.charAt(start))) {
+                    sourceMap.put(source.charAt(start), sourceMap.get(source.charAt(start)) - 1);
+                    start++;
+
+                } else {
+                    break;
+                }
+
+            }
+            if (sourceMap.size() == targetMap.size()) {
+
+                end = i;
+                int count = 0;
+                for (Character character : targetMap.keySet()) {
+                    if (targetMap.get(character) > sourceMap.get(character)) {
+                        break;
+                    }
+                    count++;
+
+                }
+                System.out.println("start:" + start + " end:" + end);
+
+                if (count == targetMap.size()) {
+                    end = i;
+                    if (end - start + 1 < minLen) {
+
+                        minLen = end - start + 1;
+
+                        minStr = source.substring(start, end + 1);
+                        System.out.println("found small:" + minStr);
+                    }
+                }
+            }
+
+
+
+
+        }
+
+        return minStr;
+    }
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        if (s.length()==2 && s.charAt(0)==s.charAt(1)){
+            return s;
+        } else if (s.charAt(0)!=s.charAt(1)){
+            return s.substring(0,1);
+        }
+        boolean[][] check = new boolean[s.length()][s.length()];
+        int max = Integer.MIN_VALUE ;
+
+        for(int m=0;m<s.length()-1;m++){
+            check[m][m+1] = true;
+        }
+        String longest = s.substring(0,1);
+        for(int i=1;i<s.length();i++) {
+            for (int j = 0; j < i-1; j++) {
+
+                if (s.charAt(i) == s.charAt(j) && check[j + 1][i - 1]) {
+
+                    longest = i-j+1>longest.length()?s.substring(j, i + 1): longest;
+                    check[j][i]=true;
+                }
+
+            }
+
+
+
+        }
+
+        return longest;
+    }
+
 }

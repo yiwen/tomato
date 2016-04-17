@@ -87,25 +87,24 @@ public class IntervalProblem {
             return intervals;
         }
         Collections.sort(intervals, new IntervalComparator());
-        print(intervals);
         List<Interval> rst = new ArrayList<Interval>();
         Interval cur = intervals.get(0);
+        for (int i =1;i<intervals.size() ; i++){
+            if (intervals.get(i).start < cur.end){
+                cur.end = Math.max(intervals.get(i).end, cur.end);
 
-       for (int j = 1; j < intervals.size() ; j++){
-           Interval next = intervals.get(j);
-           if(cur.end <next.start) {
-              rst.add(cur);
-              cur = next;
-               continue;
-
-
-          }
-           cur.end = Math.max(next.end, cur.end);
+            }else {
+                rst.add(cur);
+                cur = intervals.get(i);
+            }
 
 
-       }
 
-      rst.add(cur);
+        }
+
+
+
+        rst.add(cur);
 
         return rst;
 

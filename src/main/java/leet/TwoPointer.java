@@ -1,9 +1,7 @@
 package leet;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by yiwengao on 12/23/15.
@@ -152,46 +150,36 @@ public class TwoPointer {
 
     }
 
-    public int lengthOfLongestSubstringKDistinct(String S, int k) {
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
         // write your code here
-        if (S==null || S.length()==0){
+        if (s==null || s.length()==0 ||k==0){
             return 0;
         }
-        String s=S.toLowerCase();
-        int max = Integer.MIN_VALUE;
-        Map<Character ,Integer> set= new HashMap<Character, Integer>();
+        s =s.toLowerCase();
+        int max= Integer.MIN_VALUE;
+        Map<Character, Integer> charCount = new HashMap<Character, Integer>();
         int j=0;
-        for (int i=0;i<s.length();i++){
+        for(int i=0;i<s.length();i++){
 
-            if (set.get(s.charAt(i)) ==null){
-                set.put(s.charAt(i), 1);
-            } else{
-                int count =set.get(s.charAt(i));
-                set.put(s.charAt(i),  count+ 1);
-            }
+            char c = s.charAt(i);
+            if (charCount.containsKey(c)){
+                charCount.put(c, charCount.get(c) +1);
+            }else {
+                charCount.put(c, 1);
 
-          //  System.out.println("totla: "+ set.size());
-            if (set.size()==k){
-                max = Math.max(max, i-j+1);
-                System.out.println("s:" + j + " e:"+i + " len:"+ s.substring(j,i));
-                while(set.size()==k && j<i) {
-                    if (Integer.valueOf(set.get(s.charAt(j))) == 1) {
-                        set.remove(s.charAt(j));
+                    while (charCount.size() > k && j <= i) {
+                        char toRemove = s.charAt(j);
+                        if (charCount.get(toRemove) == 1) {
+                            charCount.remove(toRemove);
+                        } else {
+                            charCount.put(toRemove, charCount.get(toRemove) - 1);
+                        }
+                        max = Math.max(max, i - j + 1);
 
-
-                    } else {
-                        int count = set.get(s.charAt(j));
-
-                        set.put(s.charAt(j), count - 1);
-
+                        j++;
                     }
-                    j++;
-                }
+
             }
-
-
-
-
         }
         return max;
     }

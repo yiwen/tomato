@@ -2,7 +2,6 @@ package leet;
 
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.Stack;
 
 /**
  * Created by yiwengao on 12/28/15.
@@ -593,6 +592,37 @@ public class DP {
         }
         return counts[s.length()];
 
+    }
+
+    public int longestIncreasingContinuousSubsequence(int[] A) {
+        // Write your code here
+        if (A==null || A.length==0){
+            return 0;
+        }
+        if (A.length==1){
+            return 1;
+        }
+        int longest = Integer.MIN_VALUE;
+        int tmpLen = 0;
+        for (int i =1;i<A.length;i++){
+            if (A[i] == A[i-1] +1){
+                tmpLen++;
+            }else{
+                longest = Math.max(longest, tmpLen);
+                tmpLen=0;
+            }
+        }
+        tmpLen = 0;
+        for (int i =1;i<A.length;i++){
+            if (A[i] == A[i-1] -1){
+                tmpLen++;
+            }else{
+                longest = Math.max(longest, tmpLen);
+                tmpLen=0;
+            }
+        }
+
+        return longest;
     }
 
 

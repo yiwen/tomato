@@ -1,6 +1,5 @@
 package leet;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -258,7 +257,7 @@ public class HeapProblems {
     public static void main(String[] args) {
 
         HeapProblems problems = new HeapProblems();
-        problems.kthPrimeNumber_heap(4);
+        problems.medianSlidingWindow(new int[]{1,2,7,7,2},3);
     }
 
     class minComp implements Comparator<Integer> {
@@ -316,6 +315,75 @@ public class HeapProblems {
         }
         return rst;
     }
+
+    public ArrayList<Integer> medianSlidingWindow(int[] nums, int k) {
+        // write your code here
+        ArrayList<Integer> rst =  new ArrayList<Integer>();
+
+        if (k>nums.length){
+            return rst;
+        }
+
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(k);
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, Collections.reverseOrder());
+        int maxLen = k%2==0? k/2: (k+1)/2;
+        int minLen = k%2==0? k/2: (k-1)/2;
+
+        for(int i =0;i<k;i++){
+
+
+            if(maxHeap.isEmpty() ||nums[i]<=maxHeap.peek()){
+                maxHeap.add(nums[i]);
+            }else if(!maxHeap.isEmpty() || nums[i]>maxHeap.peek()){
+                minHeap.add(nums[i]);
+            }
+            if (maxHeap.size()>maxLen){
+                minHeap.add(maxHeap.poll());
+            }
+            if (minHeap.size()>minLen){
+                maxHeap.add(minHeap.poll());
+            }
+
+
+        }
+        rst.add(maxHeap.peek());
+
+        for(int i =k;i<nums.length;i++){
+
+
+            if (nums[i]<=maxHeap.peek()){
+                maxHeap.add(nums[i]);
+            }else{
+                minHeap.add(nums[i]);
+            }
+
+            int toRmv=i-k;
+            if(nums[toRmv]<=maxHeap.peek()){
+                maxHeap.remove(nums[toRmv]);
+            }else{
+                minHeap.remove(nums[toRmv]);
+            }
+
+            if(maxHeap.size()>minHeap.size()+1){
+                minHeap.add(maxHeap.poll());
+            }
+            if(maxHeap.size()<minHeap.size()){
+                maxHeap.add(minHeap.poll());
+            }
+
+            if(i>= k-1){
+                rst.add(maxHeap.peek());
+            }
+
+        }
+        return rst;
+
+    }
+
+
+
+
 
 
 }

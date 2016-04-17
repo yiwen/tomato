@@ -1,5 +1,7 @@
 package leet;
 
+import java.util.*;
+
 /**
  * Created by yiwengao on 12/30/15.
  */
@@ -129,12 +131,7 @@ public class Sort {
         }
     }
 
-    public  static  void main(String[] args){
-        int[] a = {9,8,7,6,2,0,1,5,4};
-       //    System.out.println(kthLargestElement(3, a));
-        System.out.println(findMissing(a));
 
-    }
     public static int firstMissingPositive(int[] A) {
         if (A == null || A.length == 0) {
             return 1;
@@ -345,6 +342,206 @@ public class Sort {
 
     }
 
+    public void wiggleSort(int[] nums) {
+        // Write your code here
+        if (nums==null || nums.length<2 ) {
+            return;
+        }
+        int[] partitioned = partition(nums, 0, nums.length-1);
+        groupMedian(nums);
+       wiggleSortII(nums);
+
+    }
+
+    void groupMedian(int[] num){
+        if (num.length<3){
+            return;
+        }
+        int median = num[(num.length-1)/2];
+        int mid = (num.length-1)/2;
+        int rL = mid+1;
+
+        while(rL <num.length && num[rL] == median){
+            rL++;
+        }
+
+        int curP = rL+1;
+
+        while(curP<num.length){
+            if(num[curP] == median)   {
+               swap(num, curP, rL);
+
+                rL++;
+            }
+            curP ++;
+        }
+    }
+
+    int[] partition(int[] num, int s, int  e){
+        if (s==e){
+            return num;
+        }
+        int left = s;
+        int right = e;
+
+        int pivot = num[left];
+        while(left<right){
+            while(left<right && num[right]>=pivot){
+               right--;
+            }
+            num[left]=num[right];
+            while(left<right && num[left] < pivot){
+                left++;
+            }
+
+            num[right] = num[left];
+        }
+        num[left] = pivot;
+
+        if (left==(num.length-1)/2) {
+            return num;
+        }else if (left < (num.length - 1) / 2) {
+            return  partition(num, left+1, num.length - 1);
+        } else {
+           return  partition(num, 0, left-1);
+        }
+
+
+
+    }
+
+    public void wiggleSortI(int[] nums) {
+        // Write your code here
+        if (nums==null || nums.length<2){
+            return;
+        }
+
+        for (int i =1;i<nums.length ;i++){
+            if ((i%2==1 || nums[i] <nums[i-1]) ||
+                    (i%2==0 || nums[i]>nums[i-1])){
+                int tmp = nums[i-1];
+                nums[i-1] = nums[i];
+                nums[i]=tmp;
+            }
+        }
+    }
+
+    public void wiggleSortII(int[] nums) {
+        // Write your code here
+        if (nums==null ||nums.length<2){
+            return;
+        }
+     //   Arrays.sort(nums);
+        int mid  = (nums.length-1)/2;
+        int end  =nums.length-1;
+
+        int[] ans = new int[nums.length];
+        for(int i =0;i<ans.length ; i++){
+            if (i%2==0) {
+                ans[i] = nums[mid];
+                //  System.out.println("i: " + ans[i] + "= mid:" + mid);
+                mid --;
+            }else {
+                ans[i] = nums[end];
+                //   System.out.println("i: " + ans[i] + "= end:" + end);
+
+                end--;
+            }
+        }
+        for(int j =0 ; j <ans.length; j++){
+            nums[j] = ans[j];
+        }
+
+    }
+
+    public  static  void main(String[] args){
+        int[] a = {1,5,1,1,6,4};
+        //    System.out.println(kthLargestElement(3, a));
+        Sort sort = new Sort();
+        sort.wiggleSortII(a);
+
+    }
+    public int strStr(String source, String target) {
+        if (source ==null || target ==null){
+            return -1;
+        }
+
+        //write your code here
+        int sl = source.length();
+        int tl = target.length();
+        if ( tl==0){
+            return 0;
+        }
+        if (sl < tl){
+            return  -1;
+        }
+        int found=0;
+        for(int i =0;i<source.length();i++){
+            for (int j =0; j<target.length();j++){
+                if(source.charAt(i+j)!=target.charAt(j)){
+                    found = -1;
+                    break;
+
+                }
+            }
+            if (found==0){
+                return 1;
+            }
+
+        }
+
+        return  found==0? 1:-1;
+
+    }
+
+    public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
+        // write your code here
+        if (graph==null){
+            return null;
+        }
+        ArrayList<DirectedGraphNode> rst = new ArrayList<DirectedGraphNode>();
+
+        Map<DirectedGraphNode, Integer> map= new HashMap<DirectedGraphNode, Integer>();
+        for(DirectedGraphNode node : graph){
+            for(DirectedGraphNode nei :  node.neighbors){
+                if (map.get(nei)!=null){
+                    int count = map.get(nei);
+                    map.put(nei,count+1);
+
+                }else{
+                    map.put(nei, 1);
+                }
+            }
+        }
+        DirectedGraphNode root =null;
+        for(DirectedGraphNode node :  graph){
+            if (map.get(node)==null){
+                root = node;
+            }
+        }
+
+        Queue<DirectedGraphNode> queue = new LinkedList<DirectedGraphNode>();
+        queue.offer(root);
+
+        while(queue.isEmpty()){
+            int size = queue.size();
+
+            for(int i =0 ; i < size ; i++){
+                DirectedGraphNode cur = queue.poll();
+                rst.add(cur);
+                for(DirectedGraphNode nei : cur.neighbors){
+                    int count  =map.get(nei);
+                    if (count==0){
+                        queue.offer(nei);
+                    }else{
+                        map.put(nei, count-1);
+                    }
+                }
+            }
+        }
+        return rst;
+
+    }
 
 
 }

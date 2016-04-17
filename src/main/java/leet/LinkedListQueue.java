@@ -130,7 +130,7 @@ public class LinkedListQueue {
         int minSofar = a[0];
         for(int i=1;i<a.length;i++){
             minSofar = Math.min(minSofar, a[i]);
-            maxDiff = Math.max(maxDiff, a[i]-minSofar);
+            maxDiff = Math.max(maxDiff, a[i] - minSofar);
 
         }
         return maxDiff > 0 ? maxDiff : -1;

@@ -1,7 +1,6 @@
 package leet;
 
 import java.util.*;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by ygao on 2/16/16.

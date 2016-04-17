@@ -211,7 +211,7 @@ public class Subarray {
         }
         int max = Integer.MIN_VALUE;
         for(int i=0;i<prices.length-1;i++){
-            max = Math.max(left[i]+right[i], max);
+            max = Math.max(left[i] + right[i], max);
         }
         return max;
 
@@ -225,8 +225,8 @@ public class Subarray {
         int min = prices[start];
         int max=prices[start];
         for(int i=start+1; i<=end;i++){
-            min=Math.min(prices[i], min);
-            max =Math.max(max, prices[i]-min);
+            min= Math.min(prices[i], min);
+            max = Math.max(max, prices[i] - min);
         }
         return max;
     }

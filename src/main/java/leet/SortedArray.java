@@ -1,7 +1,6 @@
 package leet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by yiwengao on 12/27/15.
